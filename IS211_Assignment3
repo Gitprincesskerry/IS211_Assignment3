@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# This is Kerry Rainford's Week 3 Assignment
+
+import urllib2
+import csv
+import argparse
+import re
+
+# parser = argparse.ArgumentParser()
+# parser.add_argument("url", help = "url to obtain data from an amazon csv file", type=str)
+# args = parser.parse_args()
+
+amazon_url_csv = "http://s3.amazonaws.com/cuny-is211-spring2015/weblog.csv"
+
+def downloadkerryData(url=str):
+    """This function opens the URL passed via the url parameter"""
+    response = urllib2.urlopen(url)
+    kread = response.read()
+    return kread
+
+def process_data (kread):
+    """This function reads the file from the function downloadkerryData, and saves it as a csvfile"""
+    kerry_a3_line_by_line = kread.split("\n")
+    kerry_save_file_name = r'amazon.csv'
+    kerry_csv_write = open(kerry_save_file_name, 'w')
+
+    kerry_image_counter = 0
+    kerry_browser_counter = 0
+    kerry_firefox_counter = 0
+    kerry_chrome_counter = 0
+    kerry_msie_counter = 0
+    kerry_safari_counter = 0
+
+    for x in kerry_a3_line_by_line:
+        kerry_csv_write.write(x)
+        if re.search('.jpg|.gif|.png|.JPEG|.GIF|.PNG', x):
+            kerry_image_counter += 1
+
+        if re.search('Firefox', x):
+            kerry_firefox_counter += 1
+        if re.search('Chrome|chrome', x):
+            kerry_chrome_counter += 1
+        if re.search('MSIE', x):
+            kerry_msie_counter += 1
+        if re.search('Safari', x):
+            kerry_safari_counter += 1
+
+    kerry_image_stats = float(kerry_image_counter)/len(kerry_a3_line_by_line) * 100
+    print("Image requests, account for %.1f of all requests." %kerry_image_stats)
+
+    if kerry_firefox_counter == max(kerry_firefox_counter, kerry_chrome_counter, kerry_msie_counter, kerry_safari_counter):
+        print("Firefox is the most popular browser")
+    if kerry_chrome_counter == max(kerry_firefox_counter, kerry_chrome_counter, kerry_msie_counter, kerry_safari_counter):
+        print("Chrome is the most popular browser")
+    if kerry_msie_counter == max(kerry_firefox_counter, kerry_chrome_counter, kerry_msie_counter, kerry_safari_counter):
+        print("MSIE is the most popular browser")
+    if kerry_safari_counter == max(kerry_firefox_counter, kerry_chrome_counter, kerry_msie_counter, kerry_safari_counter):
+        print("Safari is the most popular browser!!!")
+
+#downloadkerryData(amazon_url_csv)
+y = downloadkerryData(amazon_url_csv)
+process_data(y)
