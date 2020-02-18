@@ -7,9 +7,9 @@ import csv
 import argparse
 import re
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument("url", help = "url to obtain data from an amazon csv file", type=str)
-# args = parser.parse_args()
+parser = argparse.ArgumentParser()
+parser.add_argument("url", help = "url to obtain data from an amazon csv file", type=str)
+args = parser.parse_args()
 
 amazon_url_csv = "http://s3.amazonaws.com/cuny-is211-spring2015/weblog.csv"
 
@@ -58,6 +58,6 @@ def process_data (kread):
     if kerry_safari_counter == max(kerry_firefox_counter, kerry_chrome_counter, kerry_msie_counter, kerry_safari_counter):
         print("Safari is the most popular browser!!!")
 
-#downloadkerryData(amazon_url_csv)
+downloadkerryData(amazon_url_csv)
 y = downloadkerryData(amazon_url_csv)
 process_data(y)
